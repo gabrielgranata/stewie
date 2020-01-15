@@ -1,12 +1,26 @@
 let express = require('express');
-    // mongoose = require('mongoose');
+let mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedTopology: true });
+let db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+    console.log('were connected!')
+});
 
 let app = express();
 
-let url = 'mongodb://localhost:27017';
-// mongoose.connect(url)
+let kittySchema = new mongoose.Schema({
+    name: String
+})
 
-// app.use(express.static('public'));
+let Kitten = mongoose.model('Kitten', kittySchema);
+
+let silence  = new Kitten({name: 'Silence'})
+
+Kitten.create(silence)
+
+app.use(express.static('public'));
 
 let port = '3000'
 let ip = '127.0.0.1'
