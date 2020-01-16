@@ -1,6 +1,8 @@
 let express = require('express');
 let mongoose = require('mongoose');
 
+let app = express();
+
 mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true, useUnifiedTopology: true });
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -8,17 +10,6 @@ db.once('open', function() {
     console.log('were connected!')
 });
 
-let app = express();
-
-let kittySchema = new mongoose.Schema({
-    name: String
-})
-
-let Kitten = mongoose.model('Kitten', kittySchema);
-
-let silence  = new Kitten({name: 'Silence'})
-
-Kitten.create(silence)
 
 app.use(express.static('public'));
 
